@@ -15,10 +15,10 @@ namespace Project01
             //sample.Task2();
             //sample.Task3();
             //sample.Task4();
-            sample.Task5();
-            sample.Task6();
-            sample.Task7();
-            sample.Task8();
+            //sample.Task5();
+            //sample.Task6();
+            //sample.Task7();
+            // sample.Task8();
             sample.Task9();
             sample.Task10();
             sample.Task11();

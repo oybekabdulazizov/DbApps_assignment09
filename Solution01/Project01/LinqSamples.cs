@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Project01
@@ -230,8 +232,11 @@ namespace Project01
         /// </summary>
         public void Task3()
         {
-            var maxSalary = Emps.Max(e => e.Salary);
-            Console.WriteLine($"{maxSalary}\n");
+            var max1 = (from emps in Emps
+                        select emps.Salary).Max();
+
+            var max2 = Emps.Max(e => e.Salary);
+            Console.WriteLine($"{max2}\n");
         }
 
         /// <summary>
@@ -239,6 +244,11 @@ namespace Project01
         /// </summary>
         public void Task4()
         {
+            var res = from emps in Emps
+                      where emps.Salary == (from emps2 in Emps
+                                               select emps2.Salary).Max()
+                      select emps;
+
             var maxSalary = Emps.Max(e => e.Salary);
             var result = Emps.Where(e => e.Salary == maxSalary).ToList();
             result.ForEach(i => Console.WriteLine(i));
@@ -255,9 +265,14 @@ namespace Project01
                              FirstName = emps.Ename, 
                              EmployeeJob = emps.Job
                          };
-            foreach (var item in result)
+            var res2 = Emps.Select(emps => new
             {
-                Console.WriteLine(item.FirstName + ": " + item.EmployeeJob);
+                FirstName = emps.Ename, 
+                EmployeeJob = emps.Job
+            });
+            foreach (var item in res2)
+            {
+                Console.WriteLine($"{item.FirstName}: {item.EmployeeJob}");
             }
             Console.WriteLine();
         }
@@ -269,7 +284,28 @@ namespace Project01
         /// </summary>
         public void Task6()
         {
+            var res1 = from emps in Emps
+                       join depts in Depts on emps.Deptno equals depts.Deptno
+                       select new
+                       {
+                           Ename = emps.Ename,
+                           Job = emps.Job,
+                           Dname = depts.Dname
+                       };
 
+            var res2 = Emps.Join(Depts, e => e.Deptno, q => q.Deptno, (r, w) => new { r, w })
+                             .Select(w => new 
+                             {
+                                 w.r.Ename, 
+                                 w.r.Job, 
+                                 w.w.Dname
+                             }) ;
+
+            foreach (var item in res1)
+            {
+                Console.WriteLine($"{item.Ename} | {item.Job} | {item.Dname}");
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -277,7 +313,25 @@ namespace Project01
         /// </summary>
         public void Task7()
         {
+            var res = from emps in Emps
+                      group emps by emps.Job into d
+                      select new
+                      {
+                          EmployeeJob = d.Key,
+                          Count = d.Count()
+                      };
 
+            var res2 = Emps.GroupBy(e => e.Job).Select(e => new
+            {
+                EmployeeJob = e.Key, 
+                Count = e.Count()
+            });
+
+
+            foreach (var item in res2)
+            {
+                Console.WriteLine($"{item.EmployeeJob} | ({item.Count})");
+            }
         }
 
         /// <summary>
@@ -286,7 +340,14 @@ namespace Project01
         /// </summary>
         public void Task8()
         {
+            var exists = from emps in Emps
+                         where emps.Job == "Backend programmer"
+                         select emps.Ename;
+            Console.WriteLine(exists.Any() ? "true" : "-");
 
+            var exists2 = Emps.Any(e => e.Job == "Backend programmer");
+            Console.WriteLine(exists2 == true ? "true" : "-");
+            Console.WriteLine();
         }
 
         /// <summary>
