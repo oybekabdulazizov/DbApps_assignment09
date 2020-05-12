@@ -3,6 +3,8 @@ using Project01.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -202,13 +204,10 @@ namespace Project01
                           Zawod = emp.Job
                       };
 
-            foreach (var item in res)
-            {
-                Console.WriteLine(item.Nazwisko + ": " + item.Zawod);
-            }
             //2. Lambda and Extension methods
             var res2 = Emps.Where(e => e.Job == "Backend programmer").Select((e) => e.Ename + ": " + e.Job).ToList();
             res2.ForEach(i => Console.WriteLine(i));
+            Console.WriteLine();
         }
         /// <summary>
         /// SELECT * FROM Emps Job = "Frontend programmer" AND Salary>1000 ORDER BY Ename DESC;
@@ -220,15 +219,10 @@ namespace Project01
                       emp.Salary > 1000
                       orderby emp.Ename descending
                       select emp;
-
-            foreach (var item in res)
-            {
-                Console.WriteLine(item.Ename + ": " + item.Job + " " + item.Salary);
-            }
-            
-            var res2 = Emps.Where(e => e.Job == "Frontend programmer")
-                          .Where(e => e.Salary > 1000)
-                          .OrderByDescending(e => e.Ename);
+            var res2 = Emps.Where((e) => e.Job == "Frontend programmer" && e.Salary > 1000)
+                          .OrderByDescending(e => e.Ename).ToList();
+            res2.ForEach(i => Console.WriteLine(i));
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -236,7 +230,8 @@ namespace Project01
         /// </summary>
         public void Task3()
         {
-
+            var maxSalary = Emps.Max(e => e.Salary);
+            Console.WriteLine($"{maxSalary}\n");
         }
 
         /// <summary>
@@ -244,7 +239,9 @@ namespace Project01
         /// </summary>
         public void Task4()
         {
-
+            var maxSalary = Emps.Max(e => e.Salary);
+            var result = Emps.Where(e => e.Salary == maxSalary).ToList();
+            result.ForEach(i => Console.WriteLine(i));
         }
 
         /// <summary>
@@ -252,7 +249,17 @@ namespace Project01
         /// </summary>
         public void Task5()
         {
-
+            var result = from emps in Emps
+                         select new
+                         {
+                             FirstName = emps.Ename, 
+                             EmployeeJob = emps.Job
+                         };
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.FirstName + ": " + item.EmployeeJob);
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
