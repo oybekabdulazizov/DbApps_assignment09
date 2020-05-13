@@ -20,8 +20,8 @@ namespace Project01
             //sample.Task7();
             // sample.Task8();
             // sample.Task9();
-            sample.Task10();
-            sample.Task11();
+            // sample.Task10();
+            // sample.Task11();
             sample.Task12();
         }
     }

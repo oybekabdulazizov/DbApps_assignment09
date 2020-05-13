@@ -411,14 +411,36 @@ namespace Project01
         //Find the employee with the highest salary using the Aggregate () method
         public void Task11()
         {
-
+            var res = Emps.Aggregate((a, b) => a.Salary > b.Salary ? a : b);
+            Console.WriteLine(res);
         }
 
         //Using the LINQ language and the SelectMany method, 
         //perform a CROSS JOIN join between collections Emps and Depts
         public void Task12()
         {
+            var res1 = from emps in Emps
+                       from depts in Depts
+                       select new
+                       {
+                           emps,
+                           depts
+                       };
+            foreach (var i in res1)
+            {
+                Console.WriteLine($"{i.emps.Ename} || {i.depts.Dname}");
+            }
+            Console.WriteLine();
 
+            var res2 = Emps.SelectMany(e => Depts, (e, d) => new { e, d });
+
+            /*var res3 = Emps.SelectMany(e => Depts, (e, d) => new { e, d })
+                           .Where(a => a.e.Deptno == a.d.Deptno)
+                           .Select(a => new { a.e, a.d });*/
+            foreach (var i in res2)
+            {
+                Console.WriteLine($"{i.e.Ename} || {i.d.Dname}");
+            }
         }
     }
 }
