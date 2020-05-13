@@ -19,7 +19,7 @@ namespace Project01
             //sample.Task6();
             //sample.Task7();
             // sample.Task8();
-            sample.Task9();
+            // sample.Task9();
             sample.Task10();
             sample.Task11();
             sample.Task12();

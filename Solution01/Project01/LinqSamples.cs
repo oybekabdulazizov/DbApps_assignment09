@@ -22,7 +22,7 @@ namespace Project01
             LoadData();
         }
 
-        public void LoadData() 
+        public void LoadData()
         {
             var empsCol = new List<Emp>();
             var deptsCol = new List<Dept>();
@@ -189,6 +189,8 @@ namespace Project01
         /// <summary>
         /// SELECT * FROM Emps WHERE Job = "Backend programmer";
         /// </summary>
+
+        #region Task1
         public void Task1()
         {
             //var res = new List<Emp>();
@@ -211,6 +213,8 @@ namespace Project01
             res2.ForEach(i => Console.WriteLine(i));
             Console.WriteLine();
         }
+        #endregion
+
         /// <summary>
         /// SELECT * FROM Emps Job = "Frontend programmer" AND Salary>1000 ORDER BY Ename DESC;
         /// </summary>
@@ -246,7 +250,7 @@ namespace Project01
         {
             var res = from emps in Emps
                       where emps.Salary == (from emps2 in Emps
-                                               select emps2.Salary).Max()
+                                            select emps2.Salary).Max()
                       select emps;
 
             var maxSalary = Emps.Max(e => e.Salary);
@@ -262,12 +266,12 @@ namespace Project01
             var result = from emps in Emps
                          select new
                          {
-                             FirstName = emps.Ename, 
+                             FirstName = emps.Ename,
                              EmployeeJob = emps.Job
                          };
             var res2 = Emps.Select(emps => new
             {
-                FirstName = emps.Ename, 
+                FirstName = emps.Ename,
                 EmployeeJob = emps.Job
             });
             foreach (var item in res2)
@@ -294,12 +298,12 @@ namespace Project01
                        };
 
             var res2 = Emps.Join(Depts, e => e.Deptno, q => q.Deptno, (r, w) => new { r, w })
-                             .Select(w => new 
+                             .Select(w => new
                              {
-                                 w.r.Ename, 
-                                 w.r.Job, 
+                                 w.r.Ename,
+                                 w.r.Job,
                                  w.w.Dname
-                             }) ;
+                             });
 
             foreach (var item in res1)
             {
@@ -323,7 +327,7 @@ namespace Project01
 
             var res2 = Emps.GroupBy(e => e.Job).Select(e => new
             {
-                EmployeeJob = e.Key, 
+                EmployeeJob = e.Key,
                 Count = e.Count()
             });
 
@@ -356,7 +360,18 @@ namespace Project01
         /// </summary>
         public void Task9()
         {
+            var res1 = (from emps in Emps
+                        where emps.Job == "Frontend programmer"
+                        orderby emps.HireDate descending
+                        select emps).Take(1).ToList();
+            res1.ForEach(i => Console.WriteLine(i));
+            Console.WriteLine();
 
+            var res2 = Emps.Where(e => e.Job == "Frontend programmer")
+                           .OrderByDescending(e => e.HireDate)
+                           .Take(1)
+                           .ToList();
+            res2.ForEach(i => Console.WriteLine(i));
         }
 
         /// <summary>
@@ -366,7 +381,31 @@ namespace Project01
         /// </summary>
         public void Task10()
         {
+            var res1 = (from emps in Emps
+                        select new
+                        {
+                            ename = emps.Ename,
+                            job = emps.Job,
+                            hireDate = emps.HireDate
+                        }).Union(from emps2 in Emps
+                                 select new
+                                 {
+                                     ename = "No value",
+                                     job = (string)null,
+                                     hireDate = (DateTime?)null
+                                 });
+            foreach (var item in res1)
+            {
+                Console.WriteLine($"{item.ename} | {item.job} | {item.hireDate}");
+            }
+            Console.WriteLine();
 
+            var res2 = Emps.Select(e => new { ename = e.Ename, job = e.Job, hireDate = e.HireDate })
+                           .Union(Emps.Select(e => new { ename = "No value", job = (string)null, hireDate = (DateTime?)null }));
+            foreach (var item in res2)
+            {
+                Console.WriteLine($"{item.ename} | {item.job} | {item.hireDate}");
+            }
         }
 
         //Find the employee with the highest salary using the Aggregate () method
