@@ -189,7 +189,6 @@ namespace Project01
         /// <summary>
         /// SELECT * FROM Emps WHERE Job = "Backend programmer";
         /// </summary>
-
         #region Task1
         public void Task1()
         {
@@ -218,6 +217,7 @@ namespace Project01
         /// <summary>
         /// SELECT * FROM Emps Job = "Frontend programmer" AND Salary>1000 ORDER BY Ename DESC;
         /// </summary>
+        #region Task2
         public void Task2()
         {
             var res = from emp in Emps
@@ -230,10 +230,12 @@ namespace Project01
             res2.ForEach(i => Console.WriteLine(i));
             Console.WriteLine();
         }
+        #endregion
 
         /// <summary>
         /// SELECT MAX(Salary) FROM Emps;
         /// </summary>
+        #region Task3
         public void Task3()
         {
             var max1 = (from emps in Emps
@@ -242,10 +244,12 @@ namespace Project01
             var max2 = Emps.Max(e => e.Salary);
             Console.WriteLine($"{max2}\n");
         }
+        #endregion
 
         /// <summary>
         /// SELECT * FROM Emps WHERE Salary=(SELECT MAX(Salary) FROM Emps);
         /// </summary>
+        #region Task4
         public void Task4()
         {
             var res = from emps in Emps
@@ -257,18 +261,19 @@ namespace Project01
             var result = Emps.Where(e => e.Salary == maxSalary).ToList();
             result.ForEach(i => Console.WriteLine(i));
         }
+        #endregion
 
         /// <summary>
         /// SELECT ename AS FirstName, job AS EmployeeJob FROM Emps;
         /// </summary>
+        #region Task5
         public void Task5()
         {
             var result = from emps in Emps
                          select new
                          {
                              FirstName = emps.Ename,
-                             EmployeeJob = emps.Job
-                         };
+                                    };
             var res2 = Emps.Select(emps => new
             {
                 FirstName = emps.Ename,
@@ -280,12 +285,14 @@ namespace Project01
             }
             Console.WriteLine();
         }
+        #endregion
 
         /// <summary>
         /// SELECT Emps.Ename, Emps.Job, Depts.Dname FROM Emps
         /// INNER JOIN Depts ON Emps.Deptno=Depts.Deptno
         /// Result: Joining collections Emps and Depts.
         /// </summary>
+        #region Task6
         public void Task6()
         {
             var res1 = from emps in Emps
@@ -311,10 +318,12 @@ namespace Project01
             }
             Console.WriteLine();
         }
+        #endregion
 
         /// <summary>
         /// SELECT Job AS EmployeeJob, COUNT(1) EmployeeNuber FROM Emps GROUP BY Job;
         /// </summary>
+        #region Task7
         public void Task7()
         {
             var res = from emps in Emps
@@ -337,11 +346,13 @@ namespace Project01
                 Console.WriteLine($"{item.EmployeeJob} | ({item.Count})");
             }
         }
+        #endregion 
 
         /// <summary>
         /// Return value "true" if at least one of 
         /// the elements of collection works as "Backend programmer".
         /// </summary>
+        #region Task8
         public void Task8()
         {
             var exists = from emps in Emps
@@ -353,11 +364,13 @@ namespace Project01
             Console.WriteLine(exists2 == true ? "true" : "-");
             Console.WriteLine();
         }
+        #endregion 
 
         /// <summary>
         /// SELECT TOP 1 * FROM Emp WHERE Job="Frontend programmer"
         /// ORDER BY HireDate DESC;
         /// </summary>
+        #region Task9
         public void Task9()
         {
             var res1 = (from emps in Emps
@@ -373,12 +386,14 @@ namespace Project01
                            .ToList();
             res2.ForEach(i => Console.WriteLine(i));
         }
+        #endregion 
 
         /// <summary>
         /// SELECT Ename, Job, Hiredate FROM Emps
         /// UNION
         /// SELECT "No value", null, null;
         /// </summary>
+        #region Task10
         public void Task10()
         {
             var res1 = (from emps in Emps
@@ -407,16 +422,20 @@ namespace Project01
                 Console.WriteLine($"{item.ename} | {item.job} | {item.hireDate}");
             }
         }
+        #endregion
 
         //Find the employee with the highest salary using the Aggregate () method
+        #region Task11
         public void Task11()
         {
             var res = Emps.Aggregate((a, b) => a.Salary > b.Salary ? a : b);
             Console.WriteLine(res);
         }
+        #endregion
 
         //Using the LINQ language and the SelectMany method, 
         //perform a CROSS JOIN join between collections Emps and Depts
+        #region Task12
         public void Task12()
         {
             var res1 = from emps in Emps
@@ -442,5 +461,6 @@ namespace Project01
                 Console.WriteLine($"{i.e.Ename} || {i.d.Dname}");
             }
         }
+        #endregion
     }
 }
